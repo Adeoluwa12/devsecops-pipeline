@@ -33,7 +33,7 @@ jobs:
           p/secrets
           p/owasp-top-ten
       env:
-        SEMGREP_APP_TOKEN: `${{ secrets.SEMGREP_APP_TOKEN }}
+        SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
       continue-on-error: true
 
     - name: Upload SAST results
@@ -59,7 +59,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: `${{ env.NODE_VERSION }}
+        node-version: ${{ env.NODE_VERSION }}
 
     - name: Install dependencies
       working-directory: app
@@ -120,7 +120,7 @@ jobs:
     needs: [dependency-scan, iac-scan]
 
     outputs:
-      image-tag: `${{ steps.meta.outputs.version }}
+      image-tag: ${{ steps.meta.outputs.version }}
 
     steps:
     - name: Checkout code
@@ -133,7 +133,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: `${{ env.IMAGE_NAME }}
+        images: ${{ env.IMAGE_NAME }}
         tags: |
           type=sha,prefix=sha-
           type=ref,event=branch
@@ -144,8 +144,8 @@ jobs:
         context: .
         file: docker/Dockerfile
         push: false
-        tags: `${{ steps.meta.outputs.tags }}
-        labels: `${{ steps.meta.outputs.labels }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         outputs: type=docker,dest=/tmp/image.tar
@@ -219,18 +219,18 @@ jobs:
 
     - name: Generate security summary
       run: |
-        echo "# Security Scan Summary" >> `$GITHUB_STEP_SUMMARY
-        echo "" >> `$GITHUB_STEP_SUMMARY
-        echo "| Stage | Status |" >> `$GITHUB_STEP_SUMMARY
-        echo "|-------|--------|" >> `$GITHUB_STEP_SUMMARY
-        echo "| SAST (Semgrep) | `${{ needs.sast.result }} |" >> `$GITHUB_STEP_SUMMARY
-        echo "| Dependency Scan (npm audit) | `${{ needs.dependency-scan.result }} |" >> `$GITHUB_STEP_SUMMARY
-        echo "| IaC Scan (Checkov) | `${{ needs.iac-scan.result }} |" >> `$GITHUB_STEP_SUMMARY
-        echo "| Image Scan (Trivy) | `${{ needs.image-scan.result }} |" >> `$GITHUB_STEP_SUMMARY
-        echo "" >> `$GITHUB_STEP_SUMMARY
-        echo "Commit: `${{ github.sha }}" >> `$GITHUB_STEP_SUMMARY
-        echo "Branch: `${{ github.ref_name }}" >> `$GITHUB_STEP_SUMMARY
-        echo "Triggered by: `${{ github.actor }}" >> `$GITHUB_STEP_SUMMARY
+        echo "# Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Stage | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| SAST (Semgrep) | ${{ needs.sast.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Dependency Scan (npm audit) | ${{ needs.dependency-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| IaC Scan (Checkov) | ${{ needs.iac-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Image Scan (Trivy) | ${{ needs.image-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "Triggered by: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Upload consolidated report
       uses: actions/upload-artifact@v4
@@ -261,6 +261,6 @@ jobs:
         echo "  2. Update image tag in GitOps repo"
         echo "  3. ArgoCD picks up the change and deploys"
         echo ""
-        echo "Image tag: `${{ needs.build.outputs.image-tag }}"
+        echo "Image tag: ${{ needs.build.outputs.image-tag }}"
         echo "Deploying to: production"
         echo "Status: SUCCESS"
