@@ -1,0 +1,16 @@
+# .checkov.yaml
+# Checkov configuration file
+# Documents accepted risks with justifications
+
+skip-check:
+  # CKV_AWS_144: Cross-region replication
+  # Justification: This is a dev artifact bucket.
+  # Cross-region replication adds cost not justified for non-critical artifacts.
+  # Reviewed by: platform-team | Date: 2025-05-01
+  - CKV_AWS_144
+
+  # CKV_AWS_18: S3 access logging
+  # Justification: Access logging enabled at the CloudTrail level for this account.
+  # Bucket-level logging would be redundant and increase storage costs.
+  # Reviewed by: platform-team | Date: 2025-05-01
+  - CKV_AWS_18

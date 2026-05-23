@@ -98,7 +98,8 @@ jobs:
       with:
         directory: terraform
         framework: terraform
-        soft_fail: true
+        soft_fail: true      
+        config_file: .checkov.yaml
         output_format: sarif
         output_file_path: reports/checkov-results.sarif
 
